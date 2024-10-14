@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Pos\CategoryController;
 use App\Http\Controllers\Pos\CustomerController;
+use App\Http\Controllers\Pos\ProductController;
 use App\Http\Controllers\Pos\SupplierController;
 use App\Http\Controllers\Pos\UnitController;
 use App\Http\Controllers\ProfileController;
@@ -77,6 +78,20 @@ Route::controller(CategoryController::class)->group(function(){
         Route::get('/category/edit/{id}','CategoryEdit')->name('category.edit');
         Route::post('/category/update','CategoryUpdate')->name('category.update');
         Route::get('/category/delete/{id}','CategoryDelete')->name('category.delete');
+
+    });
+});
+
+// todo: Product All Route
+Route::controller(ProductController::class)->group(function(){
+    Route::prefix('admin')->group(function(){
+
+        Route::get('/product/all','ProductAll')->name('product.all');
+        Route::get('/product/add','ProductAdd')->name('product.add');
+        Route::post('/product/store','ProductStore')->name('product.store');
+        Route::get('/product/edit/{id}','ProductEdit')->name('product.edit');
+        Route::post('/product/update','ProductUpdate')->name('product.update');
+        Route::get('/product/delete/{id}','ProductDelete')->name('product.delete');
 
     });
 });
