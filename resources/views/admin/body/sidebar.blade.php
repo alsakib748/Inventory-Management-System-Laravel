@@ -69,6 +69,17 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-mail-send-line"></i>
+                        <span>Manage Purchase</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('purchase.all') }}">All Purchase</a></li>
+                        <li><a href="{{ route('purchase.pending') }}">Approval Purchase</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-layout-3-line"></i>
                         <span>Layouts</span>
                     </a>

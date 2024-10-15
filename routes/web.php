@@ -3,7 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Pos\CategoryController;
 use App\Http\Controllers\Pos\CustomerController;
+use App\Http\Controllers\Pos\DefaultController;
 use App\Http\Controllers\Pos\ProductController;
+use App\Http\Controllers\Pos\PurchaseController;
 use App\Http\Controllers\Pos\SupplierController;
 use App\Http\Controllers\Pos\UnitController;
 use App\Http\Controllers\ProfileController;
@@ -95,6 +97,43 @@ Route::controller(ProductController::class)->group(function(){
 
     });
 });
+
+// todo: Purchase All Route
+Route::controller(PurchaseController::class)->group(function(){
+    Route::prefix('admin')->group(function(){
+
+        Route::get('/purchase/all','PurchaseAll')->name('purchase.all');
+        Route::get('/purchase/add','PurchaseAdd')->name('purchase.add');
+        Route::post('/purchase/store','PurchaseStore')->name('purchase.store');
+        // Route::get('/product/edit/{id}','ProductEdit')->name('product.edit');
+        // Route::post('/product/update','ProductUpdate')->name('product.update');
+        Route::get('/purchase/delete/{id}','PurchaseDelete')->name('purchase.delete');
+
+        Route::get('/purchase/pending','PurchasePending') ->name('purchase.pending');
+
+        Route::get('/purchase/approve/{id}','PurchaseApprove') ->name('purchase.approve');
+
+    });
+
+});
+
+// todo: Default All Route
+Route::controller(DefaultController::class)->group(function(){
+    Route::prefix('admin')->group(function(){
+
+        Route::get('/get-category','GetCategory')->name('get-category');
+        Route::get('/get-product','GetProduct')->name('get-product');
+
+        // Route::post('/product/store','ProductStore')->name('product.store');
+        // Route::get('/product/edit/{id}','ProductEdit')->name('product.edit');
+        // Route::post('/product/update','ProductUpdate')->name('product.update');
+        // Route::get('/product/delete/{id}','ProductDelete')->name('product.delete');
+
+    });
+
+});
+
+
 
 Route::get('/dashboard', function () {
     return view('admin.index');
