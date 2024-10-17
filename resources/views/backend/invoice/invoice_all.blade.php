@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Unit All</h4>
+                        <h4 class="mb-sm-0">Invoice All</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -27,37 +27,39 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <a href="{{ route('unit.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Unit</a> <br/><br/>
+                            <a href="{{ route('invoice.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light"
+                                style="float:right;"><i class="fas fa-plus-circle"></i> Add Invoice</a> <br/><br/>
 
-                            <h4 class="card-title">Unit All Data</h4>
+                            <h4 class="card-title">Purchase All Data</h4>
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th width="5%">SL</th>
-                                        <th>Name</th>
-                                        <th width="20%">Action</th>
+                                        <th>SL</th>
+                                        <th>Customer Name</th>
+                                        <th>Invoice No</th>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                @php
-                                    $i = 1;
-                                @endphp
+                                    @php
+                                        $i = 1;
+                                    @endphp
 
-                                @foreach($units as $key => $item)
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>
-                                            <a href="{{ route('unit.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
-
-                                            <a href="{{ route('unit.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                    @foreach ($invoices as $key => $item)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ optional($item->payment)->customer->name }}</td>
+                                            <td>{{ $item->invoice_no }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($item->date)) }}</td>
+                                            <td>{{ $item->description }}</td>
+                                            <td>{{ optional($item->payment)->total_amount }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
 

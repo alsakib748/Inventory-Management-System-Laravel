@@ -36,7 +36,7 @@
                                 <div class="col-md-4">
                                     <div class="md-3">
                                         <label for="supplier_id" class="form-label">Supplier Name</label>
-                                        <select name="supplier_id" id="supplier_id" class="form-select">
+                                        <select name="supplier_id" id="supplier_id" class="form-select select2">
                                             <option selected value="">Select a Supplier</option>
                                             @foreach ($supplier as $key => $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -48,7 +48,7 @@
                                 <div class="col-md-4">
                                     <div class="md-3">
                                         <label for="category_id" class="form-label">Category Name</label>
-                                        <select name="category_id" id="category_id" class="form-select">
+                                        <select name="category_id" id="category_id" class="form-select select2">
                                             <option selected value="">Select a Category</option>
 
                                         </select>
@@ -58,7 +58,7 @@
                                 <div class="col-md-4">
                                     <div class="md-3">
                                         <label for="product_id" class="form-label">Product Name</label>
-                                        <select name="product_id" id="product_id" class="form-select">
+                                        <select name="product_id" id="product_id" class="form-select select2">
                                             <option selected value="">Select a Product</option>
 
                                         </select>
@@ -69,8 +69,7 @@
                                     <div class="md-3">
                                         <label for="product_id" class="form-label" style="margin-top: 45px;"></label>
 
-                                        <i
-                                            class="btn btn-secondary btn-rounded waves-effect waves-light fas fa-plus-circle addeventmore">
+                                        <i class="btn btn-secondary btn-rounded waves-effect waves-light fas fa-plus-circle addeventmore">
                                             Add More</i>
 
                                     </div>

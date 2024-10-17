@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Pos\CategoryController;
 use App\Http\Controllers\Pos\CustomerController;
 use App\Http\Controllers\Pos\DefaultController;
+use App\Http\Controllers\Pos\InvoiceController;
 use App\Http\Controllers\Pos\ProductController;
 use App\Http\Controllers\Pos\PurchaseController;
 use App\Http\Controllers\Pos\SupplierController;
@@ -117,6 +118,26 @@ Route::controller(PurchaseController::class)->group(function(){
 
 });
 
+// todo: Invoice All Route
+Route::controller(InvoiceController::class)->group(function(){
+    Route::prefix('admin')->group(function(){
+
+        Route::get('/invoice/all','InvoiceAll')->name('invoice.all');
+
+        Route::get('/invoice/add','InvoiceAdd')->name('invoice.add');
+
+        Route::post('/invoice/store','InvoiceStore')->name('invoice.store');
+
+        // Route::get('/purchase/delete/{id}','PurchaseDelete')->name('purchase.delete');
+
+        // Route::get('/purchase/pending','PurchasePending') ->name('purchase.pending');
+
+        // Route::get('/purchase/approve/{id}','PurchaseApprove') ->name('purchase.approve');
+
+    });
+
+});
+
 // todo: Default All Route
 Route::controller(DefaultController::class)->group(function(){
     Route::prefix('admin')->group(function(){
@@ -124,7 +145,8 @@ Route::controller(DefaultController::class)->group(function(){
         Route::get('/get-category','GetCategory')->name('get-category');
         Route::get('/get-product','GetProduct')->name('get-product');
 
-        // Route::post('/product/store','ProductStore')->name('product.store');
+        Route::get('/check-product','GetStock')->name('check-product-stock');
+
         // Route::get('/product/edit/{id}','ProductEdit')->name('product.edit');
         // Route::post('/product/update','ProductUpdate')->name('product.update');
         // Route::get('/product/delete/{id}','ProductDelete')->name('product.delete');
