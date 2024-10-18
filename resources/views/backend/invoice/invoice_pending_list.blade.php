@@ -42,6 +42,8 @@
                                         <th>Date</th>
                                         <th>Description</th>
                                         <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
 
@@ -58,6 +60,25 @@
                                             <td>{{ date('d-m-Y', strtotime($item->date)) }}</td>
                                             <td>{{ $item->description }}</td>
                                             <td>{{ optional($item->payment)->total_amount }}</td>
+                                            <td>
+                                                @if($item->status == 0)
+                                                    <button type="button" class="btn btn-warning btn-sm">Pending</button>
+                                                @elseif($item->status == 1)
+                                                    {{-- <span class="badge bg-info">Approved</span> --}}
+                                                    <button type="button" class="btn btn-info btn-sm">Approved</button>
+                                                @endif
+                                            </td>
+                                            <td>
+
+                                            @if($item->status == 0)
+
+                                                <a href="{{ route('invoice.approve',$item->id) }}" class="btn btn-success btn-sm" title="Approve Data"> <i class="fas fa-check-circle"></i></a>
+
+                                                <a href="{{ route('invoice.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
+
+                                            @endif
+
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -67,7 +88,6 @@
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row -->
-
 
         </div>
     </div>
