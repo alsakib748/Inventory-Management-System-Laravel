@@ -242,5 +242,20 @@ class InvoiceController extends Controller
 
     } // todo: End Method
 
+    public function PrintInvoiceList(){
+
+        $invoices = Invoice::orderBy('date','DESC')->orderBy('id','DESC')->where('status','1')->get();
+
+        return view('backend.invoice.print_invoice_list',compact('invoices'));
+
+    } // todo: End Method
+
+    public function PrintInvoice($id){
+
+        $invoice = Invoice::with('invoice_details')->findOrFail($id);
+
+        return view('backend.pdf.invoice_pdf',compact('invoice'));
+
+    } // todo: End Method
 
 }
