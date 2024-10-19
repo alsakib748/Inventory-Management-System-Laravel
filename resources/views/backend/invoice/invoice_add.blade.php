@@ -208,8 +208,6 @@
         </div>
     </div>
 
-
-
     <script id="document-template" type="text/x-handlebars-template">
 
         <tr class="delete_add_more_item" id="delete_add_more_item">

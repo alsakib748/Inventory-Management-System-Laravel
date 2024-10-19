@@ -7,6 +7,7 @@ use App\Http\Controllers\Pos\DefaultController;
 use App\Http\Controllers\Pos\InvoiceController;
 use App\Http\Controllers\Pos\ProductController;
 use App\Http\Controllers\Pos\PurchaseController;
+use App\Http\Controllers\Pos\StockController;
 use App\Http\Controllers\Pos\SupplierController;
 use App\Http\Controllers\Pos\UnitController;
 use App\Http\Controllers\ProfileController;
@@ -147,6 +148,31 @@ Route::controller(InvoiceController::class)->group(function(){
     });
 
 });
+
+// todo: Stock All Route
+Route::controller(StockController::class)->group(function(){
+    Route::prefix('admin')->group(function(){
+
+        Route::get('/stock/report','StockReport')->name('stock.report');
+
+        Route::get('/stock/report/pdf','StockReportPdf')->name('stock.report.pdf');
+
+        Route::get('/stock/supplier/wise','StockSupplierWise')->name('stock.supplier.wise');
+
+        Route::get('/supplier/wise/pdf','SupplierWisePdf')->name('supplier.wise.pdf');
+
+        Route::get('/product/wise/pdf','ProductWisePdf')->name('product.wise.pdf');
+
+        // Route::get('/purchase/delete/{id}','PurchaseDelete')->name('purchase.delete');
+
+        // Route::get('/purchase/pending','PurchasePending') ->name('purchase.pending');
+
+        // Route::get('/purchase/approve/{id}','PurchaseApprove') ->name('purchase.approve');
+
+    });
+
+});
+
 
 // todo: Default All Route
 Route::controller(DefaultController::class)->group(function(){
