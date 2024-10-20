@@ -1,22 +1,14 @@
-# Use an official PHP image with the necessary version
-FROM php:8.2-cli
+# Use an appropriate base image
+FROM php:7.4-cli
 
-# Install system dependencies
+# Install libssl
 RUN apt-get update && apt-get install -y libssl1.0.0
 
-# Set up the application
-WORKDIR /app
+# Copy application files
 COPY . /app
 
-# Install composer and Laravel dependencies
-RUN curl -sS https://getcomposer.org/installer | php && \
-    php composer.phar install --no-dev --optimize-autoloader
+# Set working directory
+WORKDIR /app
 
-# Set up the Laravel environment
-RUN php artisan key:generate
-
-# Expose port 80 for the Laravel server
-EXPOSE 80
-
-# Run the Laravel server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+# Run the PHP application
+CMD ["php", "index.php"]
