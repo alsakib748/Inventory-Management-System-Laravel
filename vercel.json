@@ -1,17 +1,20 @@
 {
     "version": 2,
-        "framework": null,
-    "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.6.0" }
-    },
-    "routes": [{
-        "src": "/(.*)",
-        "dest": "/api/index.php"
-    }],
+    "framework": null,
+    "builds": [
+        { "src": "Dockerfile", "use": "@vercel/docker" }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
-        "APP_URL": "https://yourproductionurl.com",
+        "APP_URL": "https://yourprojectdomain.com",
+        "APP_KEY": "base64:Y8NJ4bz0LVJkoLXki/UWUumkdOj2pfC52iBGKf6AoN0=",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
