@@ -1,17 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Pos\CategoryController;
-use App\Http\Controllers\Pos\CustomerController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Pos\UnitController;
+use App\Http\Controllers\Pos\StockController;
 use App\Http\Controllers\Pos\DefaultController;
 use App\Http\Controllers\Pos\InvoiceController;
 use App\Http\Controllers\Pos\ProductController;
+use App\Http\Controllers\Pos\CategoryController;
+use App\Http\Controllers\Pos\CustomerController;
 use App\Http\Controllers\Pos\PurchaseController;
-use App\Http\Controllers\Pos\StockController;
 use App\Http\Controllers\Pos\SupplierController;
-use App\Http\Controllers\Pos\UnitController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return view('auth.login');
