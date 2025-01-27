@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Unit All</h4>
+                        <h4 class="mb-sm-0">Supplier All</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -27,38 +27,37 @@
                     <div class="card">
                         <div class="card-body">
 
-                            @can('unit.add')
-                            <a href="{{ route('unit.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Unit</a> <br/><br/>
-                            @endcan
+                            <a href="{{ route('permissions.create') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Permission</a> <br/><br/>
 
-                            <h4 class="card-title">Unit All Data</h4>
+                            <h4 class="card-title">Supplier All Data</h4>
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th width="5%">SL</th>
+                                        <th>SL</th>
+                                        <th>Group Name</th>
                                         <th>Name</th>
-                                        <th width="20%">Action</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
+
 
                                 <tbody>
                                 @php
                                     $i = 1;
                                 @endphp
 
-                                @foreach($units as $key => $item)
+                                @foreach($permissions as $key => $item)
                                     <tr>
-                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $item->group_name }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>
-                                            @can('unit.edit')
-                                            <a href="{{ route('unit.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
-                                            @endcan
-                                            @can('unit.delete')
-                                            <a href="{{ route('unit.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
-                                            @endcan
+                                            <a href="{{ route('permissions.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
+
+                                            <a href="{{ route('permissions.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
+
                                         </td>
                                     </tr>
                                 @endforeach

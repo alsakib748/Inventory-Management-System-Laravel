@@ -15,9 +15,39 @@ use App\Models\InvoiceDetail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class InvoiceController extends Controller
+class InvoiceController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+            // new Middleware('permission:manage.customer.menu', only: ['CustomerAll']),
+
+            new Middleware('permission:all.invoice.submenu', only: ['InvoiceAll']),
+            new Middleware('permission:approval.invoice.submenu', only: ['InvoiceApprove']),
+            new Middleware('permission:manage.invoice.menu', only: ['InvoiceAll']),
+            new Middleware('permission:print.invoice.list.submenu', only: ['PrintInvoiceList']),
+
+            new Middleware('permission:all.invoice.list', only: ['InvoiceAll']),
+
+
+            new Middleware('permission:approval.invoice.list', only: ['InvoiceApprove']),
+            new Middleware('permission:daily.invoice.report', only: ['DailyInvoicePdf']),
+            new Middleware('permission:daily.invoice.report.list', only: ['DailyInvoiceReport']),
+            new Middleware('permission:invoice.add', only: ['InvoiceAdd']),
+            new Middleware('permission:print.invoice', only: ['PrintInvoice']),
+
+            new Middleware('permission:print.invoice.list', only: ['PrintInvoiceList']),
+
+            // new Middleware('permission:invoice.delete', only: ['InvoiceDelete']), todo: need to add permission
+
+        ];
+
+    }
+
     public function InvoiceAll(){
 
         $invoices = Invoice::orderBy('date','DESC')->orderBy('id','DESC')->where('status','1')->get();

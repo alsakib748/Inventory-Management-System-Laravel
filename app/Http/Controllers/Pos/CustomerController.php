@@ -11,9 +11,40 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CustomerController extends Controller
+class CustomerController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            // new Middleware('permission:manage.customer.menu', only: ['CustomerAll']),
+
+            new Middleware('permission:all.customer.submenu', only: ['CustomerAll']),
+            new Middleware('permission:all.customer.list', only: ['CustomerAll']),
+            new Middleware('permission:all.customer.edit', only: ['CustomerEdit']),
+            new Middleware('permission:all.customer.add', only: ['CustomerAdd']),
+            new Middleware('permission:all.customer.delete', only: ['CustomerDelete']),
+
+
+            new Middleware('permission:credit.customer.submenu', only: ['CreditCustomer']),
+            new Middleware('permission:credit.customer.edit', only: ['CustomerEditInvoice']),
+            new Middleware('permission:credit.customer.list', only: ['CreditCustomer']),
+            new Middleware('permission:credit.customer.print', only: ['CreditCustomerPrintPdf']),
+            new Middleware('permission:credit.customer.view', only: ['CustomerInvoiceDetails']),
+
+            new Middleware('permission:customer.wise.report.submenu', only: ['CustomerWiseReport']),
+
+            new Middleware('permission:paid.customer.submenu', only: ['PaidCustomer']),
+            new Middleware('permission:paid.customer.list', only: ['PaidCustomer']),
+            new Middleware('permission:paid.customer.print', only: ['PaidCustomerPrintPdf']),
+            // new Middleware('permission:paid.customer.view', only: ['CustomerDelete']),
+        ];
+
+    }
 
     public function CustomerAll(){
 

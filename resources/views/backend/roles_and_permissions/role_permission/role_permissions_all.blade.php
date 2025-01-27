@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Customer All</h4>
+                        <h4 class="mb-sm-0">Role All</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -27,21 +27,17 @@
                     <div class="card">
                         <div class="card-body">
 
-                            @can('customer.add')
-                            <a href="{{ route('customer.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Customer</a> <br/><br/>
-                            @endcan
+                            <a href="{{ route('role.permissions.create') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Assign Role Permission</a> <br/><br/>
 
-                            <h4 class="card-title">Customer All Data</h4>
+                            <h4 class="card-title">Supplier All Data</h4>
 
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                            <table id="datatable" class="table table-bordered dt-responsive wrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>SL</th>
-                                        <th>Name</th>
-                                        <th>Customer Image</th>
-                                        <th>Email</th>
-                                        <th>Address</th>
+                                        <th>Role Name</th>
+                                        <th>Permission</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -52,20 +48,34 @@
                                     $i = 1;
                                 @endphp
 
-                                @foreach($customers as $key => $item)
+                                @foreach($roles as $key => $item)
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $item->name }}</td>
-                                        <td><img src="{{ asset( $item->customer_image) }}" style="width:60px;height:50px;" alt=""></td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ $item->address }}</td>
                                         <td>
-                                            @can('customer.edit')
-                                            <a href="{{ route('customer.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
-                                            @endcan
-                                            @can('customer.delete')
-                                            <a href="{{ route('customer.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
-                                            @endcan
+                                            <div class="d-flex flex-wrap align-items-center">
+
+                                            @php
+
+                                                $permissions = Spatie\Permission\Models\Permission::select('name')->join('role_has_permissions','role_has_permissions.permission_id','=','permissions.id')->where('role_has_permissions.role_id',$item->id)->get();
+
+                                            @endphp
+
+                                            @foreach($permissions as $permission)
+
+                                                <span class="badge bg-info fs-6 p-1 m-1">{{ $permission->name }}</span>
+
+                                            @endforeach
+
+                                                    {{-- {{ $item->permissions != null ? $item->permissions->pluck('name')->implode(', ') : 'Not Given'  }} --}}
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('role.permissions.edit',$item->id) }}" class="btn btn-info btn-sm mb-2" title="Edit Data"> <i class="fas fa-edit"></i></a>
+
+                                            <a href="{{ route('roles.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
+
                                         </td>
                                     </tr>
                                 @endforeach

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolePermissionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\Pos\CategoryController;
 use App\Http\Controllers\Pos\CustomerController;
 use App\Http\Controllers\Pos\PurchaseController;
 use App\Http\Controllers\Pos\SupplierController;
+use App\Http\Controllers\Pos\PermissionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
@@ -36,6 +39,13 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/change/password', 'ChangePassword')->name('change.password');
             Route::post('/update/password', 'UpdatePassword')->name('update.password');
+
+            Route::get('/admin/all', 'index')->name('admin.all');
+            Route::get('/admin/add', 'create')->name('admin.add');
+            Route::post('/admin/store', 'store')->name('admin.store');
+            Route::get('/admin/edit/{id}', 'edit')->name('admin.edit');
+            Route::post('/admin/update', 'update')->name('admin.update');
+            Route::get('/admin/delete/{id}', 'delete')->name('admin.delete');
         });
     });
 
@@ -222,6 +232,71 @@ Route::middleware('auth')->group(function () {
         });
 
     });
+
+// todo: Permissions Route
+    Route::controller(PermissionController::class)->group(function(){
+
+        Route::prefix('admin')->group(function () {
+
+            Route::get('/permissions', 'index')->name('permissions');
+
+            Route::get('/permissions/create', 'create')->name('permissions.create');
+
+            Route::post('/permissions/store', 'store')->name('permissions.store');
+
+            Route::get('/permissions/edit/{id}', 'edit')->name('permissions.edit');
+
+            Route::post('/permissions/update', 'update')->name('permissions.update');
+
+            Route::get('/permissions/delete/{id}', 'destroy')->name('permissions.delete');
+
+        });
+
+    });
+
+    // todo: Roles Route
+    Route::controller(RoleController::class)->group(function(){
+
+        Route::prefix('admin')->group(function () {
+
+            Route::get('/roles', 'index')->name('roles');
+
+            Route::get('/roles/create', 'create')->name('roles.create');
+
+            Route::post('/roles/store', 'store')->name('roles.store');
+
+            Route::get('/roles/edit/{id}', 'edit')->name('roles.edit');
+
+            Route::post('/roles/update', 'update')->name('roles.update');
+
+            Route::get('/roles/delete/{id}', 'destroy')->name('roles.delete');
+
+        });
+
+    });
+
+    Route::controller(RolePermissionController::class)->group(function(){
+
+        Route::prefix('admin')->group(function () {
+
+            Route::get('/role/permissions', 'index')->name('role.permissions');
+
+            Route::get('/role/permissions/create', 'create')->name('role.permissions.create');
+
+            Route::post('/role/permissions/store', 'store')->name('role.permissions.store');
+
+            Route::get('/role/permissions/edit/{id}', 'edit')->name('role.permissions.edit');
+
+            Route::post('/role/permissions/update', 'update')->name('role.permissions.update');
+
+            Route::get('/role/permissions/delete/{id}', 'destroy')->name('role.permissions.delete');
+
+        });
+
+
+    });
+
+
 
 });
 

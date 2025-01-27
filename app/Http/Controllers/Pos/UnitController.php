@@ -7,9 +7,26 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class UnitController extends Controller
+class UnitController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            new Middleware('permission:manage.unit.menu', only: ['UnitAll']),
+            new Middleware('permission:unit.add', only: ['UnitAdd']),
+            new Middleware('permission:unit.list', only: ['UnitAll']),
+            new Middleware('permission:unit.edit', only: ['UnitEdit']),
+            new Middleware('permission:unit.delete', only: ['UnitDelete']),
+
+        ];
+
+    }
+
     public function UnitAll(){
 
         $units = Unit::latest()->get();

@@ -57,6 +57,7 @@
 
                                             <a href="{{ route('customer.edit.invoice',$item->invoice_id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
 
+
                                             <a href="{{ route('customer.invoice.details.pdf',$item->invoice_id) }}" target="_blank" class="btn btn-success btn-sm" title="Customer Invoice Details"> <i class="fas fa-eye"></i></a>
 
                                         </td>

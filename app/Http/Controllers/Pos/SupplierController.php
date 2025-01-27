@@ -7,9 +7,27 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SupplierController extends Controller
+
+class SupplierController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            new Middleware('permission:manage.supplier.menu', only: ['SupplierAll']),
+            new Middleware('permission:supplier.add', only: ['SupplierAdd']),
+            new Middleware('permission:supplier.list', only: ['SupplierAll']),
+            new Middleware('permission:supplier.edit', only: ['SupplierEdit']),
+            new Middleware('permission:supplier.delete', only: ['SupplierDelete']),
+
+        ];
+
+    }
+
     public function SupplierAll(){
 
         $suppliers = Supplier::latest()->get();

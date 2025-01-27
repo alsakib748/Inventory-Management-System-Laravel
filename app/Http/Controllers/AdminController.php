@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PaymentDetail;
+use Validator;
 use Carbon\Carbon;
 use App\Models\Unit;
 use App\Models\User;
@@ -14,12 +14,195 @@ use App\Models\Customer;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Models\PaymentDetail;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            new Middleware('permission:manage.admin.menu', only: ['index']),
+            new Middleware('permission:admin.add', only: ['create']),
+            new Middleware('permission:admin.list', only: ['index']),
+            new Middleware('permission:admin.edit', only: ['edit']),
+            new Middleware('permission:admin.delete', only: ['delete']),
+
+        ];
+
+    }
+
+    public function index(){
+
+        $admins = User::orderBy('name','ASC')->get();
+
+        return view('backend.define_admin.define_admin_all', compact('admins'));
+
+    }
+
+    public function create(){
+
+        $roles = Role::orderBy('name','ASC')->get();
+
+        return view('backend.define_admin.define_admin_add', compact('roles'));
+
+    }
+
+    public function store(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'username' => 'required|unique:users,username',
+            'password' => 'required|min:5',
+            'confirm_password' => 'required|same:password',
+            'role' => 'required'
+        ]);
+
+        if($validator->fails()){
+            $notification = array(
+                'message' => 'Please fill up the required field',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
+        }
+
+        $data = new User();
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->username = $request->username;
+        $data->password = Hash::make($request->password);
+        $data->save();
+        $data->syncRoles($request->role);
+
+
+        $notification = array(
+            'message' => 'Admin Added Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.all')->with($notification);
+
+    }
+
+    public function edit($id){
+
+        $admin = User::find($id);
+
+        if(is_null($admin)){
+            $notification = array(
+                'message' => 'Admin Not Found',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->route('admin.all')->with($notification);
+        }
+
+        $roles = Role::orderBy('name','ASC')->get();
+
+        $hasRole = $admin->roles->pluck('name')->first();
+
+        return view('backend.define_admin.define_admin_edit', compact('admin','roles','hasRole'));
+    }
+
+    public function update(Request $request){
+
+        $id = $request->id;
+
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'username' => 'required|unique:users,username,'.$id,
+            'role' => 'required'
+        ]);
+
+        if($validator->fails()){
+            $notification = array(
+                'message' => 'Please fill up the required field',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withErrors($validator)->withInput()->with($notification);
+        }
+
+        $data = User::find($id);
+
+        if(is_null($data)){
+            $notification = array(
+                'message' => 'Admin Not Found',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->route('admin.all')->with($notification);
+        }
+
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->username = $request->username;
+
+        if($request->password){
+            $validator = Validator::make($request->all(),[
+                'password' => 'min:5',
+                'confirm_password' => 'same:password'
+            ]);
+
+            if($validator->fails()){
+                $notification = array(
+                    'message' => 'Please fill up the required field',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->back()->withErrors($validator)->withInput()->with($notification);
+            }
+
+            $data->password = Hash::make($request->password);
+        }
+
+        $data->save();
+
+        $data->syncRoles($request->role);
+
+        $notification = array(
+            'message' => 'Admin Updated Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.all')->with($notification);
+
+    }
+
+    public function delete($id){
+
+        $data = User::find($id);
+
+        if(is_null($data)){
+            $notification = array(
+                'message' => 'Admin Not Found',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->route('admin.all')->with($notification);
+        }
+
+        $data->delete();
+
+        $notification = array(
+            'message' => 'Admin Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.all')->with($notification);
+
+    }
+
     public function dashboard(){
 
         $suppliers = Supplier::count();

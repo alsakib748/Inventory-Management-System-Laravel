@@ -11,9 +11,33 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PurchaseController extends Controller
+class PurchaseController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            new Middleware('permission:manage.purchase.menu', only: ['PurchaseAll']),
+            new Middleware('permission:all.purchase.add', only: ['PurchaseAdd']),
+            new Middleware('permission:all.purchase.list', only: ['PurchaseAll']),
+            new Middleware('permission:all.purchase.delete', only: ['PurchaseDelete']),
+
+            // new Middleware('permission:all.purchase.submenu', only: ['ProductEdit']),
+            // new Middleware('permission:approval.purchase.add', only: ['ProductEdit']),
+            new Middleware('permission:approval.purchase.approve', only: ['PurchaseApprove']),
+            new Middleware('permission:approval.purchase.list', only: ['PurchaseApprove']),
+            new Middleware('permission:daily.purchase.report.list', only: ['DailyPurchaseReport']),
+            new Middleware('permission:approval.purchase.submenu', only: ['PurchaseApprove']),
+            new Middleware('permission:daily.purchase.report.submenu', only: ['DailyPurchaseReport']),
+
+        ];
+
+    }
+
 
     public function PurchaseAll()
     {

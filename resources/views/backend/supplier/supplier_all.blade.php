@@ -27,7 +27,9 @@
                     <div class="card">
                         <div class="card-body">
 
+                            @can('supplier.add')
                             <a href="{{ route('supplier.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Supplier</a> <br/><br/>
+                            @endcan
 
                             <h4 class="card-title">Supplier All Data</h4>
 
@@ -58,10 +60,12 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->address }}</td>
                                         <td>
+                                            @can('supplier.edit')
                                             <a href="{{ route('supplier.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
-
+                                            @endcan
+                                            @can('supplier.delete')
                                             <a href="{{ route('supplier.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
-
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

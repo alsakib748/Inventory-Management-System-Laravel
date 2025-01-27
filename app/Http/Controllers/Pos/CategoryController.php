@@ -7,9 +7,23 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+            new Middleware('permission:manage.category.menu', only: ['CategoryAll']),
+            new Middleware('permission:category.list', only: ['CategoryAll']),
+            new Middleware('permission:category.edit', only: ['CategoryEdit']),
+            new Middleware('permission:category.add', only: ['CategoryStore']),
+            new Middleware('permission:category.delete', only: ['CategoryDelete']),
+        ];
+
+    }
 
     public function CategoryAll(){
 

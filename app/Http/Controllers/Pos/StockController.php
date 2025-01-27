@@ -7,9 +7,28 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class StockController extends Controller
+class StockController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            new Middleware('permission:manage.stock.menu', only: ['StockReport']),
+            new Middleware('permission:stock.report.list', only: ['StockReport']),
+            new Middleware('permission:stock.report.print', only: ['StockReportPdf']),
+
+            new Middleware('permission:stock.report.submenu', only: ['PurchaseDelete']),
+            new Middleware('permission:supplier.product.wise.list', only: ['StockSupplierWise']),
+            new Middleware('permission:supplier.product.wise.submenu', only: ['PurchaseDelete']),
+
+        ];
+
+    }
+
     public function StockReport(){
 
         $product = Product::orderBy('supplier_id','asc')->orderBy('category_id','asc')->get();

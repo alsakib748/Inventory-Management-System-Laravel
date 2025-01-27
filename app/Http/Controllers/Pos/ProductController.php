@@ -10,9 +10,26 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ProductController extends Controller
+class ProductController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array{
+
+        return [
+
+            new Middleware('permission:manage.product.menu', only: ['ProductAll']),
+            new Middleware('permission:product.add', only: ['ProductAdd']),
+            new Middleware('permission:product.list', only: ['ProductAll']),
+            new Middleware('permission:product.edit', only: ['ProductEdit']),
+            new Middleware('permission:product.delete', only: ['ProductDelete']),
+
+        ];
+
+    }
+
     public function ProductAll(){
 
         $products = Product::latest()->get();

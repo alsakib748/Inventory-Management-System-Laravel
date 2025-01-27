@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Customer All</h4>
+                        <h4 class="mb-sm-0">Supplier All</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -27,21 +27,19 @@
                     <div class="card">
                         <div class="card-body">
 
-                            @can('customer.add')
-                            <a href="{{ route('customer.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Customer</a> <br/><br/>
-                            @endcan
+                            <a href="{{ route('admin.add') }}" class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;"><i class="fas fa-plus-circle"></i> Add Admin</a> <br/><br/>
 
-                            <h4 class="card-title">Customer All Data</h4>
+                            <h4 class="card-title">Supplier All Data</h4>
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>SL</th>
+                                        <th>Username</th>
                                         <th>Name</th>
-                                        <th>Customer Image</th>
                                         <th>Email</th>
-                                        <th>Address</th>
+                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -52,20 +50,37 @@
                                     $i = 1;
                                 @endphp
 
-                                @foreach($customers as $key => $item)
+                                @foreach($admins as $key => $item)
                                     <tr>
                                         <td>{{ $i++ }}</td>
+                                        <td>{{ $item->username }}</td>
                                         <td>{{ $item->name }}</td>
-                                        <td><img src="{{ asset( $item->customer_image) }}" style="width:60px;height:50px;" alt=""></td>
                                         <td>{{ $item->email }}</td>
-                                        <td>{{ $item->address }}</td>
                                         <td>
-                                            @can('customer.edit')
-                                            <a href="{{ route('customer.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
-                                            @endcan
-                                            @can('customer.delete')
-                                            <a href="{{ route('customer.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
-                                            @endcan
+
+                                        @php
+                                            $rolename = null;
+                                            $user_id = $item->id;
+                                            $role_id = DB::table('model_has_roles')->where('model_id',$user_id)->first();
+
+                                            if($role_id){
+                                                $role = DB::table('roles')->where('id',$role_id->role_id)->first();
+                                                $rolename = $role->name;
+                                            }
+
+                                        @endphp
+
+                                        <span class="badge bg-info p-1 fs-6">
+                                            {{  ($rolename != null) ? $rolename : 'N/A' }}
+                                        </span>
+
+
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.edit',$item->id) }}" class="btn btn-info btn-sm" title="Edit Data"> <i class="fas fa-edit"></i></a>
+
+                                            <a href="{{ route('admin.delete',$item->id) }}" class="btn btn-danger btn-sm" title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i></a>
+
                                         </td>
                                     </tr>
                                 @endforeach
