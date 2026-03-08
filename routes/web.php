@@ -94,6 +94,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/customer/wise/paid/report', 'CustomerWisePaidReport')->name('customer.wise.paid.report');
 
+
         });
     });
 
